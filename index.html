@@ -440,6 +440,152 @@
             color: var(--text-primary);
         }
 
+        /* Corporate block */
+        .corporate {
+            position: relative;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.12) 0%, rgba(10, 10, 10, 0.95) 60%);
+            border-top: 2px solid var(--accent);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .corporate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .corporate-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .corporate-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.4rem 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .corporate h2 {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            margin-bottom: 1rem;
+        }
+
+        .corporate p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .corporate-features {
+            list-style: none;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .corporate-features li {
+            padding: 1rem 1.2rem;
+            background: rgba(201, 168, 76, 0.06);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .corporate-features li:hover {
+            border-color: var(--accent-dim);
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* FAQ */
+        .faq-list {
+            max-width: 720px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-align: left;
+            padding: 1.5rem 2.5rem 1.5rem 0;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: 200;
+            color: var(--accent-dim);
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .faq-item.open .faq-question::after {
+            transform: translateY(-50%) rotate(45deg);
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s;
+            padding: 0 0;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding: 0 0 1.5rem;
+        }
+
+        .faq-answer p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .corporate-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
         .trainer-bio {
             font-size: 1.15rem;
             color: var(--text-primary);
@@ -1022,7 +1168,7 @@
         <div class="hero-date">АРХМОСКВА — 27–30 мая 2026</div>
         <h1>
             <span class="hero-title-main">Ахириторика</span>
-            <span>специально для Архмосквы</span>
+            <span>подготовка к Архмоскве 2026</span>
         </h1>
         <p class="hero-subtitle">Подготовьте выступление мечты к главному архитектурному событию года</p>
         <div class="hero-line"></div>
@@ -1254,6 +1400,81 @@
 
         <div class="pricing-note">
             Первая консультация — бесплатна. Это уже полноценная рабочая встреча: мы разберём вашу задачу, наметим план и проведём первую репетицию. После неё вы решите, какой формат подходит.
+        </div>
+    </div>
+</section>
+
+<!-- Corporate -->
+<section class="corporate" id="corporate">
+    <div class="corporate-inner">
+        <div>
+            <div class="corporate-badge reveal">Для компаний</div>
+            <h2 class="reveal">Готовлю команды<br>к выступлениям</h2>
+            <p class="reveal">Работаю с архитектурными бюро и проектными организациями. Подготовлю ваших спикеров к конференциям, тендерным презентациям и публичным защитам проектов.</p>
+        </div>
+        <ul class="corporate-features">
+            <li class="reveal reveal-delay-1">Групповые тренинги для команды бюро</li>
+            <li class="reveal reveal-delay-2">Подготовка спикеров к конкретным мероприятиям</li>
+            <li class="reveal reveal-delay-3">Тендерные и конкурсные презентации</li>
+            <li class="reveal reveal-delay-4">Программа и стоимость — по согласованию</li>
+        </ul>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+        <div class="section-label reveal">Частые вопросы</div>
+        <h2 class="reveal">Вопросы и ответы</h2>
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Что будет на бесплатной консультации?
+                </button>
+                <div class="faq-answer">
+                    <p>Это полноценная рабочая встреча на 1.5 часа. Мы разберём вашу задачу, найдём идею для выступления и проведём первую репетицию. После этого вы решите, какой формат подходит. Никаких обязательств.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Я никогда не выступал публично. Мне подойдёт?
+                </button>
+                <div class="faq-answer">
+                    <p>Да, именно для этого метод и создан. Мы начинаем с вашего опыта и экспертизы — а умение говорить выстраиваем пошагово. Многие мои ученики начинали с «я не знаю, о чём говорить».</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Нужно ли учить текст наизусть?
+                </button>
+                <div class="faq-answer">
+                    <p>Нет. Мы принципиально не заучиваем текст. Вы запоминаете логику и структуру выступления, а говорите свободно, своими словами. Это снимает страх «забыть слова» и делает подачу живой.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Можно ли подготовиться к АРХМОСКВА за 2 недели?
+                </button>
+                <div class="faq-answer">
+                    <p>Да. Экспресс-формат (2 встречи) рассчитан именно на это. Если тема у вас уже есть — мы быстро выстроим структуру, отрепетируем и отточим подачу. Для более глубокой работы есть углублённый курс.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Работаете ли вы с организациями?
+                </button>
+                <div class="faq-answer">
+                    <p>Да, работаю с архитектурными бюро и проектными компаниями. Готовлю команды к конференциям, тендерным и конкурсным презентациям. Программа и стоимость — по согласованию.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                    Занятия проходят онлайн или офлайн?
+                </button>
+                <div class="faq-answer">
+                    <p>Все форматы работают онлайн — это удобно и эффективно. При необходимости возможны очные встречи в Москве, обсудим на консультации.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
