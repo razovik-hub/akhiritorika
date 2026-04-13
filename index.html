@@ -289,6 +289,48 @@
             line-height: 1.5;
         }
 
+        .challenge-main {
+            border: 1px solid var(--accent-dim);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.04), transparent);
+        }
+
+        .challenge-main::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 32px;
+            height: 32px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+
+        .challenge-main::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 32px;
+            height: 32px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+        }
+
+        .challenge-main p {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            color: var(--text-primary);
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 100%;
+        }
+
+        .challenge-main .accent {
+            font-weight: 500;
+        }
+
         .challenge-bottom {
             font-size: 1.15rem;
             color: var(--text-primary);
@@ -1222,6 +1264,10 @@
             Каждый архитектор — потенциально уникальный харизматичный спикер.
             Ваше <span class="accent">«не понимаю, о чём говорить»</span> может стать исходной точкой для потрясающего рассказа.
         </p>
+        <div class="challenge-main reveal">
+            <p>Главный вопрос не в том, как побороть волнение или красиво встать у экрана. Главный вопрос — <span class="accent">как сделать так, чтобы после вашего выступления к вам подошли, запомнили вас и захотели работать именно с вами?</span> Как превратить 12 минут на сцене в новые контакты, проекты и заказчиков?</p>
+        </div>
+
         <div class="challenge-questions">
             <div class="challenge-q reveal reveal-delay-1">
                 Какова «архитектура» моего выступления?  Как выстроить логику, чтобы зал слушал?
