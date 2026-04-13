@@ -101,6 +101,21 @@
             color: var(--text-primary);
         }
 
+        .nav-links .nav-cta {
+            background: var(--accent);
+            color: var(--bg-primary) !important;
+            padding: 0.45rem 1.2rem;
+            border-radius: 4px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .nav-links .nav-cta:hover {
+            background: #d4b35a;
+            transform: translateY(-1px);
+        }
+
         .nav-burger {
             display: none;
             flex-direction: column;
@@ -1273,7 +1288,7 @@
             <li><a href="#method">Метод</a></li>
             <li><a href="#trainer">О тренере</a></li>
             <li><a href="#pricing">Форматы</a></li>
-            <li><a href="#contact">Связаться</a></li>
+            <li><a href="#contact" class="nav-cta">Записаться</a></li>
         </ul>
         <button class="nav-burger" id="navBurger" aria-label="Меню">
             <span></span>
