@@ -307,11 +307,16 @@
             color: #8a8580;
             font-weight: 300;
             opacity: 1;
-            transition: color 1s ease, text-shadow 1s ease, transform 1s ease;
+            transition:
+                color 2.2s cubic-bezier(0.22, 1, 0.36, 1),
+                text-shadow 2.2s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 2.2s cubic-bezier(0.22, 1, 0.36, 1),
+                letter-spacing 2.2s cubic-bezier(0.22, 1, 0.36, 1);
             cursor: default;
             user-select: none;
             white-space: nowrap;
             line-height: 1.2;
+            transform-origin: center;
         }
 
         .pain.size-s { font-size: clamp(1rem, 1.6vw, 1.3rem); }
@@ -321,8 +326,12 @@
         .pain.lit,
         .pain.lit-accent {
             color: var(--accent);
-            text-shadow: 0 0 28px rgba(201, 168, 76, 0.55);
-            transform: scale(1.05);
+            text-shadow:
+                0 0 12px rgba(201, 168, 76, 0.85),
+                0 0 40px rgba(201, 168, 76, 0.55),
+                0 0 80px rgba(201, 168, 76, 0.35);
+            transform: scale(1.12);
+            letter-spacing: 0.02em;
         }
 
         .pain:hover {
@@ -1368,7 +1377,7 @@
         <div class="section-label reveal">Знакомо?</div>
         <p class="challenge-lead reveal">
             Каждый архитектор — потенциально уникальный харизматичный спикер.
-            Ваше <span class="accent">«не понимаю, о чём говорить»</span> может стать исходной точкой для потрясающего рассказа.
+            Ваше <span class="accent">«не понимаю, о чём говорить»</span> и <span class="accent">«сильно волнуюсь»</span> может стать исходной точкой для потрясающего рассказа.
         </p>
         <div class="pains-cloud reveal" id="painsCloud">
             <span class="pain size-l">Мне не о чём говорить</span>
@@ -1511,7 +1520,7 @@
             </div>
             <div class="partner-info">
                 <p class="trainer-bio reveal">
-                    Консалтинговое агентство #1 для креативных индустрий. С 2010 года помогают архитектурным бюро, дизайн-студиям и строительным компаниям выстраивать управление, продажи и коммуникации. Более 117 реализованных проектов.
+                    Консалтинговое агентство #1 для креативных индустрий. С 2010 года помогают архитектурным бюро, дизайн-студиям и строительным компаниям выстраивать управление, продажи и коммуникации. <span class="accent" style="font-weight: 500;">Более 250 реализованных проектов.</span>
                 </p>
                 <ul class="trainer-facts reveal">
                     <li>Бизнес-стратегии и стратегические сессии для бюро</li>
@@ -1806,12 +1815,12 @@
             pain.classList.add(accent ? 'lit-accent' : 'lit');
             active.add(pain);
 
-            // Stay lit for 1.8–3.2s, then fade
-            const stayMs = 1800 + Math.random() * 1400;
+            // Stay lit for 3.5–5s, then fade slowly
+            const stayMs = 3500 + Math.random() * 1500;
             setTimeout(() => {
                 pain.classList.remove('lit', 'lit-accent');
                 // Allow re-pick after fade-out completes
-                setTimeout(() => active.delete(pain), 1300);
+                setTimeout(() => active.delete(pain), 2300);
             }, stayMs);
         }
 
@@ -1819,8 +1828,8 @@
             if (!running) return;
             // Keep ~2–3 pains lit at any time
             if (active.size < 3) lightOne();
-            // Schedule next pulse
-            const nextMs = 600 + Math.random() * 900;
+            // Schedule next pulse — slower pacing for the swell effect
+            const nextMs = 1100 + Math.random() * 1400;
             setTimeout(tick, nextMs);
         }
 
