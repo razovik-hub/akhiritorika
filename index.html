@@ -891,8 +891,118 @@
 
         /* Form */
         .form-section {
-            max-width: 480px;
+            max-width: 640px;
             margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+                margin-bottom: 0;
+            }
+            .form-row .form-group {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-group select:focus {
+            border-color: var(--accent-dim);
+        }
+
+        .form-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .form-radio-group label {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-transform: none;
+            letter-spacing: normal;
+            margin-bottom: 0;
+        }
+
+        .form-radio-group label:hover {
+            border-color: var(--accent-dim);
+            color: var(--text-primary);
+        }
+
+        .form-radio-group input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .form-radio-group input[type="radio"]:checked + label,
+        .form-radio-group label.checked {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(201, 168, 76, 0.06);
+        }
+
+        .form-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--accent-dim);
+            color: var(--accent);
+            text-align: center;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .form-status.error {
+            border-color: #c94c4c;
+            color: #e88a8a;
+        }
+
+        .form-status.show { display: block; }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: wait;
         }
 
         .form-section h3 {
@@ -1570,7 +1680,7 @@
                 <h3>Бесплатный вебинар</h3>
                 <div class="price-card-details">
                     «Как сделать уверенное выступление»<br>
-                    <strong>28 мая</strong><br><br>
+                    <strong>28 апреля</strong><br><br>
                     1.5 часа — знакомство с методом, разбор типичных ошибок, практические приёмы, которые можно применить сразу
                 </div>
                 <div class="price-card-price">Бесплатно</div>
@@ -1588,7 +1698,7 @@
                     Интенсивная работа в мини-группе. Каждый готовит своё реальное выступление с обратной связью тренера и группы
                 </div>
                 <div class="price-card-price">25 000 &#8381;</div>
-                <a href="#contact" class="btn btn-outline">Узнать о ближайшей группе</a>
+                <a href="#contact" class="btn btn-outline">Записаться на консультацию</a>
             </div>
 
             <!-- Express -->
@@ -1596,7 +1706,7 @@
                 <div class="price-card-label">Индивидуально</div>
                 <h3>Экспресс</h3>
                 <div class="price-card-details">
-                    2 встречи по 1.5 часа<br>
+                    3 встречи по 90 минут<br>
                     + бесплатная консультация<br><br>
                     Компактный формат для тех, кто знает свою тему и хочет быстро отточить подачу и структуру
                 </div>
@@ -1696,7 +1806,7 @@
                     Можно ли подготовиться к АРХМОСКВА за 10 дней?
                 </button>
                 <div class="faq-answer">
-                    <p>Да. Экспресс-формат (2 встречи) рассчитан именно на это. Если тема у вас уже есть — мы быстро выстроим структуру, отрепетируем и отточим подачу. Для более глубокой работы есть углублённый курс.</p>
+                    <p>Да. Экспресс-формат (3 встречи по 90 минут) рассчитан именно на это. Если тема у вас уже есть — мы быстро выстроим структуру, отрепетируем и отточим подачу. Для более глубокой работы есть углублённый курс.</p>
                 </div>
             </div>
             <div class="faq-item reveal">
@@ -1733,16 +1843,74 @@
         <div class="form-section">
             <h3>Или оставьте заявку</h3>
             <form id="contactForm" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <input type="text" name="name" placeholder="Ваше имя" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" name="firstName" placeholder="Имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="lastName" placeholder="Фамилия" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="text" name="contact" placeholder="Телефон или email" required>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" name="company" placeholder="Компания / бюро">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="position" placeholder="Должность">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <textarea name="message" placeholder="Расскажите коротко о вашей задаче (необязательно)"></textarea>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Какая программа интересует</label>
+                    <div class="form-radio-group">
+                        <input type="radio" name="program" id="prog-group" value="Группа">
+                        <label for="prog-group">Группа</label>
+
+                        <input type="radio" name="program" id="prog-indiv" value="Индивидуальная работа">
+                        <label for="prog-indiv">Индивидуальная работа</label>
+
+                        <input type="radio" name="program" id="prog-corp" value="Тренинг для бюро">
+                        <label for="prog-corp">Тренинг для бюро</label>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <textarea name="request" placeholder="Ваш запрос — к какому событию готовитесь, что хотите получить"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="source" placeholder="Как узнали об Архириторике">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Телефон" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Почта" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label>Удобный способ связи</label>
+                    <div class="form-radio-group">
+                        <input type="radio" name="channel" id="ch-tg" value="Telegram" checked>
+                        <label for="ch-tg" class="checked">Telegram</label>
+
+                        <input type="radio" name="channel" id="ch-wa" value="WhatsApp">
+                        <label for="ch-wa">WhatsApp</label>
+
+                        <input type="radio" name="channel" id="ch-max" value="MAX">
+                        <label for="ch-max">MAX</label>
+
+                        <input type="radio" name="channel" id="ch-call" value="Звонок">
+                        <label for="ch-call">Звонок</label>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary form-submit">Отправить заявку</button>
+                <div id="formStatus" class="form-status"></div>
             </form>
             <p class="form-note">Отвечу в течение дня</p>
         </div>
@@ -1851,22 +2019,71 @@
         cloudObserver.observe(cloud);
     })();
 
-    // Form handling
-    function handleSubmit(e) {
+    // Radio-chip visual sync (browsers don't style sibling labels reliably)
+    document.querySelectorAll('.form-radio-group').forEach(group => {
+        group.addEventListener('change', () => {
+            group.querySelectorAll('label').forEach(l => l.classList.remove('checked'));
+            const checked = group.querySelector('input[type="radio"]:checked');
+            if (checked) {
+                const lbl = group.querySelector(`label[for="${checked.id}"]`);
+                if (lbl) lbl.classList.add('checked');
+            }
+        });
+    });
+
+    // Form submission — POST to Google Apps Script Web App
+    // After deploying the script, paste the /exec URL here:
+    const FORM_ENDPOINT = 'https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec';
+
+    async function handleSubmit(e) {
         e.preventDefault();
         const form = e.target;
-        const name = form.name.value;
-        const contact = form.contact.value;
-        const message = form.message.value;
+        const status = document.getElementById('formStatus');
+        const submitBtn = form.querySelector('.form-submit');
 
-        // For now, open mailto as fallback
-        const subject = encodeURIComponent('Заявка с сайта Архириторика');
-        const body = encodeURIComponent(
-            `Имя: ${name}\nКонтакт: ${contact}\nСообщение: ${message || 'Не указано'}`
-        );
+        const data = {
+            firstName: form.firstName.value.trim(),
+            lastName: form.lastName.value.trim(),
+            company: form.company.value.trim(),
+            position: form.position.value.trim(),
+            program: (form.program.value || '').trim(),
+            request: form.request.value.trim(),
+            source: form.source.value.trim(),
+            phone: form.phone.value.trim(),
+            email: form.email.value.trim(),
+            channel: (form.channel.value || '').trim(),
+            page: location.href,
+            ts: new Date().toISOString()
+        };
 
-        // Show success message
-        form.innerHTML = '<p style="color: var(--accent); font-size: 1.2rem; padding: 2rem 0;">Спасибо за заявку! Свяжусь с вами в ближайшее время.</p>';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправляю…';
+        status.classList.remove('show', 'error');
+
+        try {
+            // text/plain avoids CORS preflight; Apps Script reads e.postData.contents
+            await fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(data)
+            });
+
+            form.reset();
+            // re-sync default Telegram chip
+            document.querySelectorAll('.form-radio-group label').forEach(l => l.classList.remove('checked'));
+            const tgLabel = document.querySelector('label[for="ch-tg"]');
+            if (tgLabel) tgLabel.classList.add('checked');
+
+            status.textContent = 'Спасибо! Заявка отправлена. Свяжусь с вами в течение дня.';
+            status.classList.add('show');
+            submitBtn.textContent = 'Отправлено';
+        } catch (err) {
+            status.textContent = 'Не получилось отправить. Напишите, пожалуйста, в Telegram: @vasilyevsv';
+            status.classList.add('show', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Отправить заявку';
+        }
     }
 </script>
 
