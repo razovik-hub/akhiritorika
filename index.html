@@ -291,19 +291,56 @@
             max-width: 720px;
         }
 
-        .challenge-questions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+        .pains-cloud {
+            position: relative;
+            min-height: 420px;
+            margin: 3rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem 2rem;
+            padding: 2rem 1rem;
         }
 
-        .challenge-q {
-            padding: 1.5rem;
-            border-left: 2px solid var(--accent-dim);
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.5;
+        .pain {
+            color: var(--text-primary);
+            font-weight: 300;
+            opacity: 0.12;
+            transition: opacity 1.2s ease, color 1.2s ease, text-shadow 1.2s ease, transform 1.2s ease;
+            cursor: default;
+            user-select: none;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .pain.size-s { font-size: clamp(1rem, 1.6vw, 1.3rem); }
+        .pain.size-m { font-size: clamp(1.2rem, 2.2vw, 1.9rem); }
+        .pain.size-l { font-size: clamp(1.5rem, 3vw, 2.6rem); }
+
+        .pain.lit {
+            opacity: 1;
+            color: var(--text-primary);
+            text-shadow: 0 0 24px rgba(201, 168, 76, 0.35);
+            transform: scale(1.04);
+        }
+
+        .pain.lit-accent {
+            opacity: 1;
+            color: var(--accent);
+            text-shadow: 0 0 28px rgba(201, 168, 76, 0.55);
+            transform: scale(1.06);
+        }
+
+        .pain:hover {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .pains-cloud {
+                min-height: 520px;
+                gap: 0.9rem 1.4rem;
+            }
         }
 
         .challenge-main {
@@ -1340,19 +1377,19 @@
             Каждый архитектор — потенциально уникальный харизматичный спикер.
             Ваше <span class="accent">«не понимаю, о чём говорить»</span> может стать исходной точкой для потрясающего рассказа.
         </p>
-        <div class="challenge-questions">
-            <div class="challenge-q reveal reveal-delay-1">
-                Какова «архитектура» моего выступления?  Как выстроить логику, чтобы зал слушал?
-            </div>
-            <div class="challenge-q reveal reveal-delay-2">
-                Как найти свою тему и рассказать о том, о чём ещё не рассказали другие — чтобы все увидели вашу уникальность?
-            </div>
-            <div class="challenge-q reveal reveal-delay-3">
-                Как справиться с волнением перед большим залом — когда один на один всё нормально, а на сцене ступор?
-            </div>
-            <div class="challenge-q reveal reveal-delay-4">
-                Как не читать со слайдов и не терять мысль на середине выступления?
-            </div>
+        <div class="pains-cloud reveal" id="painsCloud">
+            <span class="pain size-l">Мне не о чём говорить</span>
+            <span class="pain size-m">Как их заинтересовать?</span>
+            <span class="pain size-s">А вдруг я всё забуду?</span>
+            <span class="pain size-m">Я не оратор</span>
+            <span class="pain size-s">У меня ничего особенного</span>
+            <span class="pain size-l">Всё уже сказали до меня</span>
+            <span class="pain size-m">Голос дрожит</span>
+            <span class="pain size-s">Что если зал заскучает?</span>
+            <span class="pain size-m">Я не умею себя продавать</span>
+            <span class="pain size-s">А если будут каверзные вопросы?</span>
+            <span class="pain size-l">Не люблю быть в центре внимания</span>
+            <span class="pain size-s">Как уложиться в 12 минут?</span>
         </div>
 
         <div class="challenge-main reveal">
@@ -1749,6 +1786,68 @@
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
+
+    // Pains cloud — random highlight emerging from darkness
+    (function initPainsCloud() {
+        const cloud = document.getElementById('painsCloud');
+        if (!cloud) return;
+        const pains = Array.from(cloud.querySelectorAll('.pain'));
+        if (!pains.length) return;
+
+        let active = new Set();
+        let running = false;
+
+        function pickRandom() {
+            // Choose a pain that's not currently active
+            const candidates = pains.filter(p => !active.has(p));
+            if (!candidates.length) return null;
+            return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+
+        function lightOne() {
+            const pain = pickRandom();
+            if (!pain) return;
+
+            // ~25% of the time, light it as accent (gold)
+            const accent = Math.random() < 0.25;
+            pain.classList.add(accent ? 'lit-accent' : 'lit');
+            active.add(pain);
+
+            // Stay lit for 1.8–3.2s, then fade
+            const stayMs = 1800 + Math.random() * 1400;
+            setTimeout(() => {
+                pain.classList.remove('lit', 'lit-accent');
+                // Allow re-pick after fade-out completes
+                setTimeout(() => active.delete(pain), 1300);
+            }, stayMs);
+        }
+
+        function tick() {
+            if (!running) return;
+            // Keep ~2–3 pains lit at any time
+            if (active.size < 3) lightOne();
+            // Schedule next pulse
+            const nextMs = 600 + Math.random() * 900;
+            setTimeout(tick, nextMs);
+        }
+
+        // Start animation only when section is visible (saves cycles)
+        const cloudObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !running) {
+                    running = true;
+                    // Initial burst — light a couple immediately
+                    lightOne();
+                    setTimeout(lightOne, 400);
+                    setTimeout(tick, 900);
+                } else if (!entry.isIntersecting) {
+                    running = false;
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cloudObserver.observe(cloud);
+    })();
 
     // Form handling
     function handleSubmit(e) {
