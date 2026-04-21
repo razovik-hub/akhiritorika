@@ -1,15 +1,14 @@
 /**
  * Архириторика — приёмник формы
  *
- * Принимает POST с данными из формы, пишет строку в Google Sheet,
- * отправляет уведомление в Telegram и письмо на email.
+ * Принимает POST с данными из формы, пишет строку в Google Sheet
+ * и отправляет уведомление на email.
+ * (Telegram-уведомления временно отключены — добавим позже.)
  *
  * Настройка Script Properties (Project Settings → Script Properties):
- *   SHEET_ID         — ID Google-таблицы (берётся из URL: /d/{ID}/edit)
- *   SHEET_NAME       — имя листа (по умолчанию «Заявки»)
- *   TG_BOT_TOKEN     — токен бота от @BotFather
- *   TG_CHAT_ID       — chat_id куда слать (свой ID или ID канала)
- *   NOTIFY_EMAIL     — email для уведомлений (например, sergey@…)
+ *   SHEET_ID       — ID Google-таблицы (берётся из URL: /d/{ID}/edit)
+ *   SHEET_NAME     — имя листа (по умолчанию «Заявки»)
+ *   NOTIFY_EMAIL   — email для уведомлений (например, sergey@…)
  *
  * Деплой: Deploy → New deployment → type «Web app» →
  *         Execute as: Me, Who has access: Anyone → Deploy.
@@ -39,11 +38,7 @@ function doPost(e) {
     // 1. Sheet
     appendToSheet(data, props);
 
-    // 2. Telegram
-    try { sendTelegram(data, props); }
-    catch (err) { console.error('Telegram error:', err); }
-
-    // 3. Email
+    // 2. Email
     try { sendEmail(data, props); }
     catch (err) { console.error('Email error:', err); }
 
@@ -102,40 +97,6 @@ function appendToSheet(d, props) {
   ]);
 }
 
-function sendTelegram(d, props) {
-  const token  = props.getProperty('TG_BOT_TOKEN');
-  const chatId = props.getProperty('TG_CHAT_ID');
-  if (!token || !chatId) return;
-
-  const lines = [
-    '🎤 *Новая заявка — Архириторика*',
-    '',
-    `*${escape_(d.firstName)} ${escape_(d.lastName)}*` +
-      (d.position || d.company ? ` — ${escape_(d.position)}${d.position && d.company ? ', ' : ''}${escape_(d.company)}` : ''),
-    '',
-    d.program ? `📋 Программа: *${escape_(d.program)}*` : '',
-    d.request ? `📝 Запрос: ${escape_(d.request)}` : '',
-    d.source  ? `🔍 Узнал: ${escape_(d.source)}`   : '',
-    '',
-    `📞 ${escape_(d.phone)}`,
-    `✉️ ${escape_(d.email)}`,
-    `💬 Канал: ${escape_(d.channel)}`
-  ].filter(Boolean).join('\n');
-
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  UrlFetchApp.fetch(url, {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify({
-      chat_id: chatId,
-      text: lines,
-      parse_mode: 'Markdown',
-      disable_web_page_preview: true
-    }),
-    muteHttpExceptions: true
-  });
-}
-
 function sendEmail(d, props) {
   const to = props.getProperty('NOTIFY_EMAIL');
   if (!to) return;
@@ -164,12 +125,6 @@ function sendEmail(d, props) {
     body: body,
     replyTo: d.email || undefined
   });
-}
-
-function escape_(s) {
-  if (!s) return '';
-  // Markdown escaping for Telegram
-  return String(s).replace(/([_*`\[\]()])/g, '\\$1');
 }
 
 /* --- Test helper. Run from the Apps Script editor to verify wiring. --- */
